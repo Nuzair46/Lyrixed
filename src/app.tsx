@@ -1,14 +1,27 @@
 import styles from './css/app.module.scss'
-import React from 'react'
-import { Lyrics } from './components/Lyrics';
+import Lyrics from './components/Lyrics';
+const react = Spicetify.React;
 
-const App = () => 
-  <div className={styles.container}>
-    <div className={styles.lyrics_container}>
-      <div className={styles.lyrics}>
-        <Lyrics />
-      </div>
-    </div>
-  </div>
+function render() {
+    return react.createElement(App, { title: "Lyrixed" });
+}
+
+class App extends react.Component {
+    render() {
+        return react.createElement(
+            'div',
+            { className: styles.container },
+            react.createElement(
+                'div',
+                { className: styles.lyrics_container },
+                react.createElement(
+                    'div',
+                    { className: styles.lyrics },
+                    react.createElement(Lyrics, null)
+                )
+            )
+        );
+    }
+}
 
 export default App;

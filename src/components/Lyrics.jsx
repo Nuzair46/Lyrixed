@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+const react = Spicetify.React;
+const { useState, useEffect, useCallback } = Spicetify.React;
 import axios from "axios";
 import extractLyrics from "./extractLyrics";
 
@@ -15,29 +16,32 @@ const headers = {
   "x-cors-api-key": "temp_e7329afcb73a45e7477057d88af764c1",
 };
 
-const getTitle = (title, artist) => {
-  return `${title} ${artist}`
-    .toLowerCase()
-    .replace(/ *\([^)]*\) */g, "")
-    .replace(/ *\[[^\]]*]/, "")
-    .replace(/feat.|ft./g, "")
-    .replace(/\s+/g, " ")
-    .trim();
-};
+class Lyrics extends react.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentTrack: {},
+      lyricsData: "",
+      isLoading: true,
+    };
+  }
 
-const fetchLyrics = async (trackId) => {};
+  getTitle(title, artist) {
+    return `${title} ${artist}`
+      .toLowerCase()
+      .replace(/ *\([^)]*\) */g, "")
+      .replace(/ *\[[^\]]*]/, "")
+      .replace(/feat.|ft./g, "")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
 
-export const Lyrics = () => {
-  const [currentTrack, setCurrentTrack] = useState({});
-  const [lyricsData, setLyricsData] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
-
-  const fetchTrackLyrics = async () => {
+  async fetchTrackLyrics() {
     try {
-      setIsLoading(true);
+      this.setState({ isLoading: true });
       const track = Spicetify.Player.data.item.metadata;
       const { title, artist_name } = track;
-      const song = getTitle(title, artist_name);
+      const song = this.getTitle(title, artist_name);
       const reqUrl = `${init.corsUrl}${init.searchUrl}${encodeURIComponent(
         song
       )}`;
@@ -56,33 +60,42 @@ export const Lyrics = () => {
 
       const lyrics = await extractLyrics(result.url);
 
-      setLyricsData(lyrics);
+      this.setState({ lyricsData: lyrics });
     } catch (e) {
       console.error(e);
     } finally {
-      setIsLoading(false);
+      this.setState({ isLoading: false });
     }
-  };
-
-  Spicetify.Player.addEventListener("songchange", async (e) => {
-    await fetchTrackLyrics();
-  });
-
-  useEffect(async () => {
-    await fetchTrackLyrics();
-  }, []);
-
-  if (isLoading) {
-    return <div>Lyrixed is finding the lyrics. Please wait...</div>;
   }
 
-  return lyricsData ? (
-    <div>
-      {lyricsData.split("\n").map((str) => (
-        <p>{str}</p>
-      ))}
-    </div>
-  ) : (
-    <div>Couldn't find lyrics for this one.</div>
-  );
-};
+  componentDidMount() {
+    Spicetify.Player.addEventListener("songchange", async (e) => {
+      await this.fetchTrackLyrics();
+    });
+    this.fetchTrackLyrics();
+  }
+
+  render() {
+    const { isLoading, lyricsData } = this.state;
+
+    if (isLoading) {
+      return react.createElement(
+        "div",
+        null,
+        "Lyrixed is finding the lyrics. Please wait..."
+      );
+    }
+
+    return lyricsData
+      ? react.createElement(
+          "div",
+          null,
+          lyricsData
+            .split("\n")
+            .map((str) => react.createElement("p", null, str))
+        )
+      : react.createElement("div", null, "Couldn't find lyrics for this one.");
+  }
+}
+
+export default Lyrics;
