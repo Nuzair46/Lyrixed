@@ -1,5 +1,7 @@
 # Lyrixed
 
+![](resource/preview.png)
+
 Lyrixed is a Spicetify custom app to bring back the lyrics feature to Spotify desktop app for freemium users.
 
 ## Installation

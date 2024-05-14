@@ -1,5 +1,5 @@
 import styles from './css/app.module.scss'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Lyrics } from './components/Lyrics';
 
 const App = () => 

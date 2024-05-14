@@ -1,0 +1,7 @@
+{
+    "name": "Lyrixed",
+    "description": "Bringing back lyrics to Spotify free version with Genius.",
+    "preview": "resource/preview.png",
+    "readme": "README.md",
+    "tags": ["lyrics"]
+}

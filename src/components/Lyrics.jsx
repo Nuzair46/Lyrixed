@@ -25,50 +25,55 @@ const getTitle = (title, artist) => {
     .trim();
 };
 
-const fetchTrackLyrics = async (track) => {
-  const { title, artist_name } = track;
-  const song = getTitle(title, artist_name);
-  const reqUrl = `${init.corsUrl}${init.searchUrl}${encodeURIComponent(song)}`;
-  const trackResponse = await axios.get(reqUrl, { headers });
-
-  if (trackResponse.status !== 200) {
-    Spicetify.showNotification(error, "Couldn't fetch track for lyrixed");
-    return null;
-  }
-
-  const result = trackResponse.data.response.hits[0].result;
-
-  if (!result) {
-    return null;
-  }
-
-  const lyrics = await extractLyrics(result.url);
-
-  return lyrics;
-};
-
 const fetchLyrics = async (trackId) => {};
 
 export const Lyrics = () => {
-  const track = Spicetify.Player.data.track.metadata;
   const [currentTrack, setCurrentTrack] = useState({});
   const [lyricsData, setLyricsData] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchTrackLyrics = async () => {
+    try {
+      setIsLoading(true);
+      const track = Spicetify.Player.data.item.metadata;
+      const { title, artist_name } = track;
+      const song = getTitle(title, artist_name);
+      const reqUrl = `${init.corsUrl}${init.searchUrl}${encodeURIComponent(
+        song
+      )}`;
+      const trackResponse = await axios.get(reqUrl, { headers });
+
+      if (trackResponse.status !== 200) {
+        Spicetify.showNotification(error, "Couldn't fetch track for lyrixed");
+        return null;
+      }
+
+      const result = trackResponse.data.response.hits[0].result;
+
+      if (!result) {
+        return null;
+      }
+
+      const lyrics = await extractLyrics(result.url);
+
+      setLyricsData(lyrics);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   Spicetify.Player.addEventListener("songchange", async (e) => {
-    setIsLoading(true);
-    const track = Spicetify.Player.data.track.metadata;
-    setCurrentTrack(track);
+    await fetchTrackLyrics();
   });
 
   useEffect(async () => {
-    const lyrics = await fetchTrackLyrics(track);
-    setLyricsData(lyrics);
-    setIsLoading(false);
-  }, [track]);
+    await fetchTrackLyrics();
+  }, []);
 
   if (isLoading) {
-    return <div>Lyrixed is loading. Please wait...</div>;
+    return <div>Lyrixed is finding the lyrics. Please wait...</div>;
   }
 
   return lyricsData ? (
