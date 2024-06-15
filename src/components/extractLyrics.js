@@ -6,7 +6,6 @@ const proxyUrl = "https://api.allorigins.win/raw?url=";
 module.exports = async function (url) {
   try {
     let { data } = await axios.get(`${proxyUrl}${url}`);
-    console.log({ data });
     const $ = cheerio.load(data);
     let lyrics = $("[data-lyrics-container='true']")
       .find("br")
