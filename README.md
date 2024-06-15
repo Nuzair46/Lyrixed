@@ -8,12 +8,12 @@ Lyrixed is a Spicetify custom app to bring back the lyrics feature to Spotify de
 
 Windows: 
  - In your Powershell, Run:
-    ```ps
+    ```powershell
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-Expression "& { $(Invoke-WebRequest -UseBasicParsing 'https://raw.githubusercontent.com/Nuzair46/Lyrixed/install.ps1') }"
     ```
 MacOS/Linux:
 - In your terminal, Run:
-  ```sh
+  ```bash
   curl -fsSL https://raw.githubusercontent.com/Nuzair46/Lyrixed/install.sh | sh
   ```
 
