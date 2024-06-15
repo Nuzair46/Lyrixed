@@ -16,6 +16,12 @@ Lyrixed is a Spicetify custom app to bring back the lyrics feature to Spotify de
   ```
 - Restart Spotify if needed.
 
+## Uninstallation
+- In your terminal, Run:
+  ```
+  spicetify config custom_apps lyrixed-
+  spicetify apply
+  ```
 ## Warning, this is still in early beta, so expect bugs and sometimes the api might not work.
 
 - Feel free to open issue for fixes and features.
