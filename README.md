@@ -1,5 +1,7 @@
 # Lyrixed
 
+[![Discord](https://discord.com/api/guilds/807273906872123412/widget.png)](https://discord.gg/eYudMwgYtY) <img src="https://img.shields.io/github/downloads/Nuzair46/Lyrixed/total.svg" />
+
 ![](resource/preview.png)
 
 Lyrixed is a Spicetify custom app to bring back the lyrics feature to Spotify desktop app for freemium users.
@@ -23,7 +25,6 @@ MacOS/Linux:
   spicetify config custom_apps lyrixed-
   spicetify apply
   ```
-## Warning, this is still in early beta, so expect bugs and sometimes the api might not work.
+## Note
 
-- Feel free to open issue for fixes and features.
-- Please give me more stars so I can provide better solution for [cors issue](https://cors.sh/)
+- Feel free to open issue for fixes and features or contact on Discord.
