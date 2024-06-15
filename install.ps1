@@ -8,7 +8,7 @@ try {
 }
 
 $lyrixedUrl = "https://github.com/Nuzair46/Lyrixed/releases/latest/download/lyrixed.zip"
-$targetDir = Join-Path -Path $env:APPDATA -ChildPath "spicetify\CustomApps"
+$targetDir = Join-Path -Path $env:APPDATA -ChildPath "spicetify\CustomApps\lyrixed"
 
 if (-not (Test-Path -Path $targetDir)) {
     New-Item -ItemType Directory -Path $targetDir | Out-Null
