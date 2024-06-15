@@ -1,20 +1,11 @@
 const react = Spicetify.React;
 const { useState, useEffect, useCallback } = Spicetify.React;
+
 import axios from "axios";
 import extractLyrics from "./extractLyrics";
 
-const init = {
-  searchUrl: "https://api.genius.com/search?q=",
-  corsUrl: "https://proxy.cors.sh/",
-};
-
-const apiKey =
-  "22jcx1liqiOP9FTUEly8UIRnpD-kAr0Vmvq8GQ8xzyDahhM2IkkGbCgM1TccbAKx";
-
-const headers = {
-  Authorization: "Bearer " + apiKey,
-  "x-cors-api-key": "temp_e7329afcb73a45e7477057d88af764c1",
-};
+const searchUrl = "https://genius.com/api/search/song?";
+const proxyUrl = "https://api.allorigins.win/raw?url=";
 
 class Lyrics extends react.Component {
   constructor(props) {
@@ -41,18 +32,18 @@ class Lyrics extends react.Component {
       this.setState({ isLoading: true });
       const track = Spicetify.Player.data.item.metadata;
       const { title, artist_name } = track;
-      const song = this.getTitle(title, artist_name);
-      const reqUrl = `${init.corsUrl}${init.searchUrl}${encodeURIComponent(
-        song
-      )}`;
-      const trackResponse = await axios.get(reqUrl, { headers });
+      const query = new URLSearchParams({
+        per_page: 20,
+        q: `${title} ${artist_name}`,
+      });
+      const url = encodeURIComponent(`${searchUrl}${query}`);
+      const reqUrl = `${proxyUrl}${url}`;
+      const trackResponse = await axios.get(reqUrl);
 
       if (trackResponse.status !== 200) {
-        Spicetify.showNotification(error, "Couldn't fetch track for lyrixed");
         return null;
       }
-
-      const result = trackResponse.data.response.hits[0].result;
+      const result = trackResponse.data.response.sections[0].hits[0].result;
 
       if (!result) {
         return null;

@@ -1,17 +1,12 @@
-import axios from "axios";
 import cheerio from "cheerio-without-node-native";
+import axios from "axios";
 
-const init = {
-  corsUrl: "https://proxy.cors.sh/",
-};
-
-const headers = {
-  "x-cors-api-key": "temp_e7329afcb73a45e7477057d88af764c1",
-};
+const proxyUrl = "https://api.allorigins.win/raw?url=";
 
 module.exports = async function (url) {
   try {
-    let { data } = await axios.get(`${init.corsUrl}${url}`, { headers });
+    let { data } = await axios.get(`${proxyUrl}${url}`);
+    console.log({ data });
     const $ = cheerio.load(data);
     let lyrics = $("[data-lyrics-container='true']")
       .find("br")
