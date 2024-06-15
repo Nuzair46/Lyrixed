@@ -6,6 +6,7 @@ Lyrixed is a Spicetify custom app to bring back the lyrics feature to Spotify de
 
 ## Installation
 
+- Install Spicetify. [Follow the instructions here](https://spicetify.app/docs/getting-started)
 - Download the release from [here](https://github.com/Nuzair46/Lyrixed/releases/latest/download/lyrixed.zip)
 - Extract the zip file
 - Copy the folder `lyrixed` to your Spicetify custom apps folder mentioned [here](https://spicetify.app/docs/advanced-usage/custom-apps)
